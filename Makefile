@@ -1,0 +1,2 @@
+all:
+	@echo "make clean"
