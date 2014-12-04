@@ -73,6 +73,63 @@ class Nude(object):
 				ret += 2
 		return ret
 
+	def parse(self):
+		if self.result:
+			return self
+
+		pixels = self.image.load()
+		for y in range(self.height):
+			for x in range(self.width):
+				r = pixels[x, y][0]   # red
+				g = pixels[x, y][1]   # green
+				b = pixels[x, y][2]   # blue
+				_id = x + y * self.width + 1
+
+				if not self._classify_skin(r, g, b):
+					self.skin_map.append(self.Skin(_id, False, 0, x, y, False))
+				else:
+					self.skin_map.append(self.Skin(_id, True, 0, x, y, False))
+
+					region = -1
+					check_indexes = [_id - 2,
+										_id - self.width - 2,
+										_id - self.width - 1,
+										_id - self.width]
+					checker = False
+
+					for index in check_indexes:
+						try:
+							self.skin_map[index]
+						except IndexError:
+							break
+						if self.skin_map[index].skin:
+							if (self.skin_map[index].region != region and
+									region != -1 and
+									self.last_from != region and
+									self.last_to != self.skin_map[index].region):
+							self._add_merge(region, self.skin_map[index].region)
+							region = self.skin_map[index].region
+							checker = True
+
+					if not checker:
+						_skin = self.skin_map[_id - 1]._replace(region=len(self.detected_regions))
+						self.skin_map[_id - 1] = _skin
+						self.detected_regions.append([self.skin_map[_id - 1]])
+						continue
+					else:
+						if region > -1:
+							try:
+								self.detected_regions[region]
+							except IndexError:
+								self.detected_regions.append([])
+							_skin = self.skin_map[_id - 1]._replace(region=region)
+							self.skin_map[_id - 1] = _skin
+							self.detected_regions[region].append(self.skin_map[_id - 1])
+
+		self._merge(self.detected_regions, self.merge_regions)
+		self._analyse_regions()
+		return self
+
 def _testfile(fname, resize=False):
 	start = time.time()
 	n = Nude(fname)
