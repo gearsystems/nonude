@@ -282,6 +282,42 @@ class Nude(object):
         # ycc doesn't work
         return rgb_classifier or norm_rgb_classifier or hsv_classifier
 
+	def _to_normalized_rgb(self, r, g, b):
+		if r == 0:
+			r = 0.0001
+		if g == 0:
+			g = 0.0001
+		if b == 0:
+			b = 0.0001
+		_sum = float(r + g + b)
+		return [r / _sum, g / _sum, b / _sum]
+
+	def _to_hsv(self, r, g, b):
+		h = 0
+		_sum = float(r + g + b)
+		_max = float(max([r, g, b]))
+		_min = float(min([r, g, b]))
+		diff = float(_max - _min)
+		if _sum == 0:
+			_sum = 0.0001
+
+		if _max == r:
+			if diff == 0:
+				h = sys.maxsize
+			else:
+				h = (g - b) / diff
+		elif _max == g:
+			h = 2 + ((g - r) / diff)
+		else:
+			h = 4 + ((r - g) / diff)
+
+		h *= 60
+		if h < 0:
+			h += 360
+
+		return [h, 1.0 - (3.0 * (_min / _sum)), (1.0 / 3.0) * _max]
+
+
 def _testfile(fname, resize=False):
 	start = time.time()
 	n = Nude(fname)
