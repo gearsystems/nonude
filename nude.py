@@ -335,3 +335,55 @@ def _poolcallback(results):
 def _poolcallbackverbose(results):
 	fname, result, totaltime, size, message = results
 	print(fname, result, totaltime, size, message, sep=', ')
+
+def main():
+	"""
+	Command line interface
+	"""
+	import argparse
+	import os
+	import multiprocessing
+
+	parser = argparse.ArgumentParser(description='Detect nudity in images.')
+	parser.add_argument('files', metavar='image', nargs='+', help='Images you wish to test')
+	parser.add_argument('-r', '--resize', action='store_true', help='Reduce image size to increase speed of scanning')
+	parser.add_argument('-t', '--threads', metavar='int', type=int, required=False, default=0, help='The number of threads to start.')
+	parser.add_argument('-v', '--verbose', action='store_true')
+	args = parser.parse_args()
+
+	if args.threads <= 1:
+		args.threads = 0
+	if len(args.files) < args.threads:
+		args.threads = len(args.files)
+
+	callback = _poolcallback
+	if args.verbose:
+		print("#File Name, Result, Scan Time(sec), Image size, Message")
+		callback = _poolcallbackverbose
+
+	# If the user tuned on multi processing
+	if(args.threads):
+		threadlist = []
+		pool = multiprocessing.Pool(args.threads)
+		for fname in args.files:
+			if os.path.isfile(fname):
+				threadlist.append(pool.apply_async(_testfile, (fname, ), {'resize': args.resize}, callback))
+			else:
+				print(fname, "is not a file")
+		pool.close()
+		try:
+			for t in threadlist:
+				t.wait()
+		except KeyboardInterrupt:
+			pool.terminate()
+			pool.join()
+	# Run without multiprocessing
+	else:
+		for fname in args.files:
+			if os.path.isfile(fname):
+				callback(_testfile(fname, resize=args.resize))
+			else:
+				print(fname, "is not a file")
+
+if __name__ == "__main__":
+	main()
