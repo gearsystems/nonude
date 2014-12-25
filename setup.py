@@ -6,7 +6,7 @@ except ImportError:
 setup(name='nonude',
 	  version='1.0',
 	  description="Avoiding nude images in upload and its detection.",
-	  long_description=open('README.md').read(),
+	  long_description=open('ReadMe.md').read(),
       author='GEAR Systems',
       author_email='info@gearsystems.com',
       url='https://github.com/gearsystems/nonude',
