@@ -4,7 +4,7 @@ except ImportError:
     from distutils.core import setup
 
 setup(name='nonude',
-	  version='1.0',
+	  version='1.1',
 	  description="Avoiding nude images in upload and its detection.",
       author='GEAR Systems',
       author_email='info@gearsystems.com',

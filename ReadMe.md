@@ -1,6 +1,10 @@
 nonude
 =======
 
+Quick Installations
+-------------------
+We are now a pip entry, you could just do `pip install nonude` to get the entry.
+
 About
 -----
 A nudity detection plugin on the system level that is used to check if the photographs uploaded have nudity or not.
