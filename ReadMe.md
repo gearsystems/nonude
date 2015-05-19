@@ -1,6 +1,6 @@
 nonude
 =======
-
+[![PyPI version](https://badge.fury.io/py/nonude.svg)](http://badge.fury.io/py/nonude)
 Quick Installations
 -------------------
 We are now a pip entry, you could just do `pip install nonude` to get the entry.
