@@ -26,3 +26,8 @@ Development setup instructions
 Usage
 =====
 `$ nonude IMAGEPATH/NAME`
+
+Known issues
+============
+There are known issues where the installation of Pillow might fail, one of it being `jpeg -- no option found`, to fix these please install
+`sudo apt-get install libjpeg-dev` on debian based systems.
