@@ -341,7 +341,7 @@ def _poolcallbackverbose(results):
     fname, result, totaltime, size, message = results
     print(fname, result, totaltime, size, message, sep=', ')
 
-
+# Command line interface to the Nude object API presented as a part of the nonude package.
 def main():
     """
     Command line interface
@@ -367,7 +367,7 @@ def main():
         print("#File Name, Result, Scan Time(sec), Image size, Message")
         callback = _poolcallbackverbose
 
-    # If the user tuned on multi processing
+    # If the user tuned on multi processing, need to run on GPU performance.
     if(args.threads):
         threadlist = []
         pool = multiprocessing.Pool(args.threads)
