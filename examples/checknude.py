@@ -1,7 +1,12 @@
-import nude
-from nude import Nude
+"""
+Sample example usage of the nonude library
+"""
+#!/usr/bin/env python
 import glob
 import itertools
+from nude import Nude
+
+# pylint: disable=C0103
 
 # Example of usage
 # n = Nude('./images/filename.extension')
@@ -11,7 +16,7 @@ import itertools
 #n = Nude('./images/p1.jpg')
 #n.parse()
 
-#images format 
+#images format
 images_format = ['jpg', 'png', 'gif', 'tiff']
 
 #getting list of images in folder images in different format
@@ -26,8 +31,7 @@ images_list = itertools.chain(images_jpg, images_png, images_gif, images_tiff)
 #for index in range(len(images_list)):
 #	n = Nude( images_list[index] )
 for i in images_list:
-	print i
-	n = Nude(i)
-	n.parse()
-	print(n.result, n.inspect())
-
+    print(i)
+    n = Nude(i)
+    n.parse()
+    print(n.result, n.inspect())
