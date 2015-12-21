@@ -1,6 +1,7 @@
 nonude
 =======
 [![PyPI version](https://badge.fury.io/py/nonude.svg)](http://badge.fury.io/py/nonude)
+[![Code Health](https://landscape.io/github/gearsystems/nonude/master/landscape.svg?style=flat)](https://landscape.io/github/gearsystems/nonude/master)
 Quick Installations
 -------------------
 We are now a pip entry, you could just do `pip install nonude` to get the entry.
